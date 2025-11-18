@@ -67,7 +67,7 @@ public class GamePane extends StackPane {
 
             if (!player.getHand().isBust()) {
                 player.getHand().addCard(deck.pickRandomCard());
-                updateHandPane(playerHandPane, player.getHand());
+                updateHandUI(playerHandPane, player.getHand());
             }
 
             if (player.getHand().isBust()) {
@@ -79,11 +79,10 @@ public class GamePane extends StackPane {
         standButton.setOnAction(e -> {
             if (gameState != GameState.PLAYER_TURN) return;
 
-            gameState = GameState.DEALER_TURN;
             runDealerTurn();
         });
 
-        // Arrange everything vertically
+        //vertical alignment
         VBox layout = new VBox(45);
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(dealerBox, buttons, playerBox);
@@ -95,11 +94,18 @@ public class GamePane extends StackPane {
     }
 
     private void startNewGame() {
+        //Kontrovers:
         this.deck = new Deck();
+        //
         this.player = new Player("Player", deck,false);
         this.dealer = new Player("Dealer", deck, true);
 
         gameState = GameState.PLAYER_TURN;
+
+        if(player.getHand().is21()) {
+            runDealerTurn();
+        }
+
     }
 
     private VBox createPlayerBox(Player p) {
@@ -131,11 +137,11 @@ public class GamePane extends StackPane {
         pane.setPrefHeight(120);
         pane.setPrefWidth(600);
 
-        updateHandPane(pane, hand);
+        updateHandUI(pane, hand);
         return pane;
     }
 
-    private void updateHandPane(StackPane pane, Hand hand) {
+    private void updateHandUI(StackPane pane, Hand hand) {
         pane.getChildren().clear();
 
         for (int i = 0; i < hand.getCards().size(); i++) {
@@ -157,25 +163,79 @@ public class GamePane extends StackPane {
     }
 
 
-    // ============================
-    // DEALER TURN + GAME OVER
-    // ============================
+    //get winning message
 
-    private String checkWinner() {
+    private String checkWinningMessage() {
         int playerTotal = player.getHand().getBestTotal();
         int dealerTotal = dealer.getHand().getBestTotal();
 
-        if (playerTotal > 21) return "Spieler über 21! Der Dealer gewinnt!";
-        if (dealerTotal > 21) return "Dealer über 21! "+player.getName()+" gewinnt!";
-        if (playerTotal > dealerTotal) return "Spieler gewinnt!";
-        if (dealerTotal > playerTotal) return "Dealer gewinnt!";
-        return "Niemand gewinnt: Unentschieden!";
+        if(player.getHand().isBlackjack()){
+            //blackjack player
+            return player.getName()+" gewinnt! BLACKJACK!";
+        }else if(dealer.getHand().isBlackjack()){
+            //blackjack dealer
+            return "Dealer gewinnt! BLACKJACK!";
+        }
+
+            if (playerTotal > 21) return "Spieler über 21! Der Dealer gewinnt!";
+            if (dealerTotal > 21) return "Dealer über 21! "+player.getName()+" gewinnt!";
+            if (playerTotal > dealerTotal) return "Spieler gewinnt!";
+            if (dealerTotal > playerTotal) return "Dealer gewinnt!";
+            return "Niemand gewinnt: Unentschieden!";
+
+    }
+
+    //Restart Game
+
+    private void restartGame() {
+        // Reset everything
+        startNewGame();
+
+        updateHandUI(playerHandPane, player.getHand());
+        updateHandUI(dealerHandPane, dealer.getHand());
+
+        playerValueText.setText("Total: " + player.getHand().getDisplayValue());
+        dealerValueText.setText("Total: " + dealer.getHand().getDisplayValue());
+
+        gameOverOverlay.setVisible(false);
+    }
+
+    //Game over
+
+    private void showGameOver(String message) {
+        gameState = GameState.GAME_OVER;
+        gameOverMessage.setText(message);
+        gameOverOverlay.setVisible(true);
+    }
+
+    //Dealer Turn
+
+    private void runDealerTurn() {
+        gameState = GameState.DEALER_TURN;
+        actionTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+
+                    if (dealer.getHand().getBestTotal() < 17 && !player.getHand().isBust() && !player.getHand().is21()) {
+
+                        dealer.getHand().addCard(deck.pickRandomCard());
+                        updateHandUI(dealerHandPane, dealer.getHand());
+
+                        runDealerTurn();
+                    }
+                    else {
+                        updateHandUI(dealerHandPane, dealer.getHand());
+
+                        showGameOver(checkWinningMessage());
+                    }
+                });
+            }
+        }, 800);
     }
 
 
-    // ============================
-    // GAME OVER OVERLAY
-    // ============================
+    //build game over overlay (save resources)
 
     private void buildGameOverOverlay() {
         gameOverOverlay = new StackPane();
@@ -205,48 +265,4 @@ public class GamePane extends StackPane {
         this.getChildren().add(gameOverOverlay);
     }
 
-    private void showGameOver(String message) {
-        gameOverMessage.setText(message);
-        gameOverOverlay.setVisible(true);
-    }
-
-    private void runDealerTurn() {
-        actionTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
-
-                    if (dealer.getHand().getBestTotal() < 17 && !player.getHand().isBust() && !player.getHand().is21()) {
-
-                        dealer.getHand().addCard(deck.pickRandomCard());
-                        updateHandPane(dealerHandPane, dealer.getHand());
-
-                        runDealerTurn();
-                    }
-                    else {
-                        updateHandPane(dealerHandPane, dealer.getHand());
-
-                        gameState = GameState.GAME_OVER;
-
-                        showGameOver(checkWinner());
-                    }
-                });
-            }
-        }, 800);
-    }
-
-
-
-    private void restartGame() {
-        // Reset everything
-        startNewGame();
-
-        updateHandPane(playerHandPane, player.getHand());
-        updateHandPane(dealerHandPane, dealer.getHand());
-
-        playerValueText.setText("Total: " + player.getHand().getDisplayValue());
-        dealerValueText.setText("Total: " + dealer.getHand().getDisplayValue());
-
-        gameOverOverlay.setVisible(false);
-    }
 }
