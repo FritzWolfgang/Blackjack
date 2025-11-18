@@ -51,8 +51,9 @@ public class Deck {
     public Card pickRandomCard() {
         Random random = new Random();
         shuffle();
-        removeCard(cards.getFirst());
-        return cards.getFirst();
+        Card card = cards.getFirst();
+        removeCard(card);
+        return card;
     }
 
 }

@@ -1,5 +1,6 @@
 package de.ender;
 
+import de.ender.logic.GameHandler;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -21,15 +22,7 @@ public class Blackjack extends Application {
         primaryStage.setResizable(false);
         primaryStage.setMaximized(true);
 
-
-        GamePane gamePane = new GamePane();
-
-        Scene scene = new Scene(gamePane);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        scene.getStylesheets().add(
-                Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm()
-        );
+        GameHandler gameHandler = new GameHandler(primaryStage);
 
 
     }

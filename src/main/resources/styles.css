@@ -5,7 +5,7 @@
     -fx-background-radius: 15;
     -fx-background-color:
         rgba(255, 255, 255, 0.25),
-        linear-gradient(to bottom right, #4ff03c, #61db53);
+        linear-gradient(to bottom right, #cb4ef5, #3877f5);
     -fx-background-insets: 0, 1;
 
     -fx-text-fill: #f0f0f0;
@@ -23,8 +23,8 @@
 
 .standard-button:hover {
     -fx-background-color:
-        rgba(160, 255, 160, 0.4);
-    -fx-effect: dropshadow(gaussian, rgba(0,255,0,0.3), 10, 0.4, 0, 3);
+        linear-gradient(to bottom right, #d473f5, #5d92fc);
+    -fx-effect: dropshadow(gaussian, rgba(130, 139, 245,0.3), 10, 0.3, 0, 3);
 }
 
 

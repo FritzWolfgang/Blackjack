@@ -1,9 +1,9 @@
-package de.ender;
+package de.ender.ui;
 
+import de.ender.logic.GameHandler;
 import de.ender.logic.GameState;
 import de.ender.logic.Player;
 import de.ender.logic.Hand;
-import de.ender.core.Card;
 import de.ender.core.Deck;
 
 import javafx.application.Platform;
@@ -27,8 +27,6 @@ public class GamePane extends StackPane {
     private Player player;
     private Player dealer;
 
-    private Font standard_font = Font.font("Comic Sans MS", 20);
-
     private StackPane playerHandPane;
     private StackPane dealerHandPane;
 
@@ -41,7 +39,11 @@ public class GamePane extends StackPane {
 
     private Timer actionTimer = new Timer();
 
-    public GamePane() {
+    Font standard_font;
+
+    public GamePane(GameHandler gameHandler) {
+
+        standard_font = gameHandler.standard_font;
 
         this.setPadding(new Insets(20));
 
