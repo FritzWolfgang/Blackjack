@@ -1,6 +1,6 @@
-package de.ender.logic;
+package de.waft.logic;
 
-import de.ender.core.Deck;
+import de.waft.core.Deck;
 
 public class Player {
 

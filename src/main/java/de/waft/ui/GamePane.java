@@ -1,10 +1,10 @@
-package de.ender.ui;
+package de.waft.ui;
 
-import de.ender.logic.GameHandler;
-import de.ender.logic.GameState;
-import de.ender.logic.Player;
-import de.ender.logic.Hand;
-import de.ender.core.Deck;
+import de.waft.logic.GameHandler;
+import de.waft.logic.GameState;
+import de.waft.logic.Player;
+import de.waft.logic.Hand;
+import de.waft.core.Deck;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -21,6 +21,8 @@ import java.util.TimerTask;
 
 public class GamePane extends StackPane {
 
+
+    private GameHandler gameHandler;
     private GameState gameState = GameState.START;
 
     private Deck deck;
@@ -36,13 +38,14 @@ public class GamePane extends StackPane {
     private StackPane gameOverOverlay;
     private Text gameOverMessage;
     private Button restartButton;
+    private Button backToTitleScreenButton;
 
     private Timer actionTimer = new Timer();
 
     Font standard_font;
 
     public GamePane(GameHandler gameHandler) {
-
+        this.gameHandler = gameHandler;
         standard_font = gameHandler.standard_font;
 
         this.setPadding(new Insets(20));
@@ -256,11 +259,15 @@ public class GamePane extends StackPane {
         gameOverMessage.setFill(Color.WHITE);
         gameOverMessage.setFont(Font.font("Comic Sans MS", 34));
 
+        backToTitleScreenButton = new Button("Main Menu");
+        backToTitleScreenButton.getStyleClass().add("standard-button");
+        backToTitleScreenButton.setOnAction(e -> gameHandler.showTitleScreen());
+
         restartButton = new Button("Restart");
         restartButton.getStyleClass().add("standard-button");
         restartButton.setOnAction(e -> restartGame());
 
-        content.getChildren().addAll(gameOverMessage, restartButton);
+        content.getChildren().addAll(gameOverMessage, backToTitleScreenButton,restartButton);
 
         gameOverOverlay.getChildren().addAll(dim, content);
 

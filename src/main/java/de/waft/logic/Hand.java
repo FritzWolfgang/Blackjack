@@ -1,6 +1,6 @@
-package de.ender.logic;
+package de.waft.logic;
 
-import de.ender.core.Card;
+import de.waft.core.Card;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package de.ender.logic;
+package de.waft.logic;
 
 public enum GameState {
     START,

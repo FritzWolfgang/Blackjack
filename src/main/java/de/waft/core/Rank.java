@@ -1,4 +1,4 @@
-package de.ender.core;
+package de.waft.core;
 
 public enum Rank {
     TWO(2, "Two"),

@@ -1,7 +1,4 @@
-package de.ender.core;
-
-import de.ender.core.Card;
-import de.ender.core.Deck;
+package de.waft.core;
 
 public class BlackjackCards {
 

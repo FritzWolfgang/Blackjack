@@ -36,3 +36,40 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0.3, 0, 2);
     -fx-translate-y: 1;
 }
+
+.close-button {
+    -fx-padding: 10 20;
+    -fx-background-radius: 15;
+    -fx-background-color:
+        rgba(255, 255, 255, 0.25),
+        linear-gradient(to bottom right, #f54e4e, #f71e1e);
+    -fx-background-insets: 0, 1;
+
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 8, 0.4, 0, 3);
+
+    -fx-border-radius: 15;
+    -fx-border-color: rgba(255, 255, 255, 0.5);
+    -fx-border-width: 2;
+
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+
+.close-button:hover {
+    -fx-background-color:
+        linear-gradient(to bottom right, #f87e7e, #ff7878);
+    -fx-effect: dropshadow(gaussian, rgba(130, 139, 245,0.3), 10, 0.3, 0, 3);
+}
+
+
+
+.close-button:pressed {
+    -fx-background-color:
+        rgba(255, 255, 255, 0.18),
+        linear-gradient(to bottom right, #ffffff33, #cccccc22);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0.3, 0, 2);
+    -fx-translate-y: 1;
+}

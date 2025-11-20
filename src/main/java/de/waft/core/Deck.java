@@ -1,4 +1,4 @@
-package de.ender.core;
+package de.waft.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
