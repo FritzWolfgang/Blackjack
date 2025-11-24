@@ -96,7 +96,20 @@ public class GamePane extends StackPane {
             runDealerTurn(800);
         });
 
-        buttons.getChildren().addAll(hitButton, standButton);
+        ActionButton doubleButton = new ActionButton("Double", () -> {
+            if (gameState != GameState.PLAYER_TURN) return;
+
+            player.getHand().addCard(deck.pickRandomCard());
+            updateHandUI(playerHandPane, player.getHand());
+
+            runDealerTurn(800);
+        });
+
+        ActionButton splitButton = new ActionButton("Split", () -> {
+            if (gameState != GameState.PLAYER_TURN) return;
+        });
+
+        buttons.getChildren().addAll(hitButton, standButton, doubleButton, splitButton);
 
 
         // Vertical alignment
