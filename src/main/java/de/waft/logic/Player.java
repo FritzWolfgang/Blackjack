@@ -6,6 +6,7 @@ public class Player {
 
     Hand hand;
     Deck deck;
+    Account account;
     String name;
     boolean dealer;
 
@@ -14,6 +15,13 @@ public class Player {
         this.deck = deck;
         this.name = playerName;
         this.dealer = dealer;
+
+        //add money from local files here:
+        if(!dealer) {
+            account = new Account();
+        }
+        //
+
         restartGame();
     }
 
@@ -24,6 +32,10 @@ public class Player {
             hand.addCard(deck.pickRandomCard());
         }
 
+    }
+
+    public Account getAccount() {
+        return account;
     }
 
     public Hand getHand() {
